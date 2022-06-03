@@ -7,7 +7,7 @@ from flask_login import current_user
 class HomePageView(BaseView):
     @expose("/")
     def index(self):
-        return redirect(url_for("index"))
+        return redirect(url_for("account"))
 
 
 class MyAdminIndexView(AdminIndexView):
