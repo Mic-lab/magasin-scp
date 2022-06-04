@@ -18,6 +18,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def convert_to_name(name: str) -> str:
+    """
+    Capitilizes a string as if it is a proper noun
+    """
+    return name[0].upper() + name[1:].lower()
 
 @app.route("/")
 def index():
@@ -68,9 +73,13 @@ def register():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode(
             "utf-8"
         )
+        
+        first_name = convert_to_name(form.first_name.data)
+        last_name = convert_to_name(form.last_name.data)
+        
         user = User(
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
+            first_name=first_name,
+            last_name=last_name,
             email=form.email.data,
             password=hashed_password,
             admin=False,
@@ -80,9 +89,9 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(
-            form.first_name.data
+            first_name
             + " "
-            + form.last_name.data
+            + last_name
             + ", votre compte a été crée avec succès!",
             "success",
         )
